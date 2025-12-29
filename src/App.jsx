@@ -62,13 +62,13 @@ const IdentityPill = ({ isMobile }) => (
                    className="p-1.5 bg-white/10 hover:bg-[#0077b5] text-white rounded-lg transition-all shadow-sm flex items-center justify-center hover:scale-110">
                     <Linkedin size={isMobile ? 16 : 18} />
                 </a>
-                <a href="YOUR_X_LINK_HERE" target="_blank" rel="noreferrer"
+                <a href="https://x.com/Utsavvvd" target="_blank" rel="noreferrer"
                    className="p-1.5 bg-white/10 hover:bg-black text-white rounded-lg transition-all shadow-sm flex items-center justify-center hover:scale-110">
                     <XLogo className={isMobile ? "w-4 h-4" : "w-[18px] h-[18px]"} />
                 </a>
             </div>
 
-            <a href="YOUR_GOOGLE_DRIVE_LINK_HERE" target="_blank" rel="noreferrer"
+            <a href="https://drive.google.com/file/d/1X2k1QqRWVzc6WqGN_t5Ft3hl-5TMPBXT/view?usp=drive_link" target="_blank" rel="noreferrer"
                className={`flex items-center gap-2 bg-white hover:bg-blue-50 text-[#172b4d] rounded-xl font-extrabold transition-all shadow-md hover:shadow-lg active:scale-95 ${isMobile ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}>
                 <Download size={isMobile ? 14 : 16} className="text-blue-600" />
                 <span>Resume</span>
