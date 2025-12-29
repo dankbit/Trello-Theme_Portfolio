@@ -104,7 +104,7 @@ Currently looking for roles where I can connect business, design, and technology
         fullDescription: [
             {
                 institution: "Parul Institute of Technology",
-                degree: "BTECH-CSE [CGPA - 7.9/10]",
+                degree: "BTECH-CSE [CGPA - 8.1/10]",
                 year: "2021 - 2025"
             },
             {
