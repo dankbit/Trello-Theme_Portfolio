@@ -4,12 +4,13 @@ import TrelloList from "./components/TrelloList";
 import TrelloCard from "./components/TrelloCard";
 import CardModal from "./components/CardModal";
 import PortfolioGuide from "./components/PortfolioGuide";
-import { AnimatePresence, motion }  from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { 
     DndContext, 
     DragOverlay, 
     closestCorners, 
+    // IMPORT SPECIFIC SENSORS
     MouseSensor,
     TouchSensor,
     KeyboardSensor,
@@ -25,12 +26,14 @@ import {
 } from "@dnd-kit/sortable";
 import { Hand, MousePointer2, Download, Linkedin } from "lucide-react";
 
+// --- CUSTOM X (Twitter) LOGO ---
 const XLogo = ({ className }) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
 
+// --- REUSABLE IDENTITY PILL ---
 const IdentityPill = ({ isMobile }) => (
     <motion.div 
         initial={{ y: -20, opacity: 0, scale: 0.9 }}
@@ -89,10 +92,22 @@ function App() {
 
   const columnsId = useMemo(() => lists.map((col) => col.id), [lists]);
 
+  // --- SENSOR CONFIGURATION (Fixes Mobile Scrolling) ---
   const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5, } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    // Mouse: Drags instantly after 5px movement
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 5 },
+    }),
+    // Touch: Waits 250ms before dragging. This allows scrolling!
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250, 
+        tolerance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
   );
 
   const dropAnimation = {
@@ -199,7 +214,8 @@ function App() {
     <DndContext 
         sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}
     >
-        <div className={`h-screen w-full flex flex-col overflow-hidden relative selection:bg-blue-300 ${currentBg.value} transition-colors duration-500`}>
+        {/* --- MAIN WRAPPER: Use h-[100dvh] to fix mobile browser bar overlapping --- */}
+        <div className={`h-[100dvh] w-full flex flex-col overflow-hidden relative selection:bg-blue-300 ${currentBg.value} transition-colors duration-500`}>
             
             <nav className="bg-black/20 backdrop-blur-sm flex flex-col shrink-0 z-30 sticky top-0 shadow-sm border-b border-white/10 relative">
                 <div className="h-16 flex items-center justify-between px-4 w-full relative">
@@ -232,13 +248,11 @@ function App() {
                 </div>
             </nav>
 
-            {/* --- MAIN CONTAINER --- */}
-            {/* flex-1: Takes up all remaining screen height (Screen - Nav) */}
+            {/* --- SCROLL CONTAINER --- */}
             <main className="flex-1 w-full overflow-x-auto overflow-y-hidden scroll-smooth custom-scrollbar relative">
                 
-                {/* --- FIX: CALCULATED HEIGHT --- */}
-                {/* h-[calc(100%-40px)]: Forces this container to be 40px shorter than the main window */}
-                {/* This guarantees the gap at the bottom on ALL screens */}
+                {/* --- CONTENT CONTAINER --- */}
+                {/* h-[calc(100%-40px)]: Forces lists to stop 40px short of the container bottom. */}
                 <div className="flex h-[calc(100%-40px)] items-start gap-4 px-4 pt-4 min-w-max">
                     <SortableContext items={columnsId} strategy={horizontalListSortingStrategy}>
                         {lists.map((list) => (
