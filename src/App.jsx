@@ -4,13 +4,14 @@ import TrelloList from "./components/TrelloList";
 import TrelloCard from "./components/TrelloCard";
 import CardModal from "./components/CardModal";
 import PortfolioGuide from "./components/PortfolioGuide";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion }  from "framer-motion";
 
 import { 
     DndContext, 
     DragOverlay, 
     closestCorners, 
-    PointerSensor,
+    MouseSensor,
+    TouchSensor,
     KeyboardSensor,
     useSensor,
     useSensors,
@@ -24,14 +25,12 @@ import {
 } from "@dnd-kit/sortable";
 import { Hand, MousePointer2, Download, Linkedin } from "lucide-react";
 
-// --- CUSTOM X (Twitter) LOGO ---
 const XLogo = ({ className }) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
 
-// --- REUSABLE IDENTITY PILL COMPONENT ---
 const IdentityPill = ({ isMobile }) => (
     <motion.div 
         initial={{ y: -20, opacity: 0, scale: 0.9 }}
@@ -50,13 +49,10 @@ const IdentityPill = ({ isMobile }) => (
             transition={{ repeat: Infinity, duration: 2.5, ease: "linear", repeatDelay: 0.5 }}
         />
         <div className="relative z-10 flex items-center gap-3">
-            {/* Name - Slightly smaller on mobile */}
             <span className={`text-white font-black tracking-wide drop-shadow-lg whitespace-nowrap ${isMobile ? 'text-sm' : 'text-lg'}`}>
                 Utsav Dodiya
             </span>
-            
             <div className="w-px h-5 bg-white/20"></div>
-            
             <div className="flex items-center gap-1.5">
                 <a href="https://www.linkedin.com/in/utsavdodiya" target="_blank" rel="noreferrer"
                    className="p-1.5 bg-white/10 hover:bg-[#0077b5] text-white rounded-lg transition-all shadow-sm flex items-center justify-center hover:scale-110">
@@ -67,7 +63,6 @@ const IdentityPill = ({ isMobile }) => (
                     <XLogo className={isMobile ? "w-4 h-4" : "w-[18px] h-[18px]"} />
                 </a>
             </div>
-
             <a href="https://drive.google.com/file/d/1X2k1QqRWVzc6WqGN_t5Ft3hl-5TMPBXT/view?usp=drive_link" target="_blank" rel="noreferrer"
                className={`flex items-center gap-2 bg-white hover:bg-blue-50 text-[#172b4d] rounded-xl font-extrabold transition-all shadow-md hover:shadow-lg active:scale-95 ${isMobile ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}>
                 <Download size={isMobile ? 14 : 16} className="text-blue-600" />
@@ -95,7 +90,8 @@ function App() {
   const columnsId = useMemo(() => lists.map((col) => col.id), [lists]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5, } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
@@ -205,30 +201,20 @@ function App() {
     >
         <div className={`h-screen w-full flex flex-col overflow-hidden relative selection:bg-blue-300 ${currentBg.value} transition-colors duration-500`}>
             
-            {/* --- RESPONSIVE NAVBAR --- */}
             <nav className="bg-black/20 backdrop-blur-sm flex flex-col shrink-0 z-30 sticky top-0 shadow-sm border-b border-white/10 relative">
-                
-                
                 <div className="h-16 flex items-center justify-between px-4 w-full relative">
-                    
-                    {/* Left: Logo */}
                     <div className="flex items-center gap-4">
                         <div className="font-bold tracking-tight flex items-center gap-2 opacity-90 hover:opacity-100 cursor-pointer text-lg text-white">
                             <div className="w-5 h-5 bg-white rounded-[3px] shadow-sm flex items-center justify-center">
                                 <div className="w-3 h-3 bg-[#0079bf] rounded-[1px]" />
                             </div>
-                            
                             <span className="hidden md:block">Trello Portfolio</span>
                             <span className="md:hidden">Portfolio</span>
                         </div>
                     </div>
-
-                    {/* Center: DESKTOP ONLY Identity Pill (Floating Absolute) */}
                     <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         <IdentityPill isMobile={false} />
                     </div>
-                    
-                    {/* Right: Background Switcher */}
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2 bg-black/20 p-1.5 rounded-full backdrop-blur-md border border-white/10">
                             {BACKGROUNDS.map((bg) => (
@@ -241,23 +227,26 @@ function App() {
                         </div>
                     </div>
                 </div>
-
-            
                 <div className="md:hidden w-full pb-3 px-2 flex justify-center">
                     <IdentityPill isMobile={true} />
                 </div>
             </nav>
 
-            {/* Board Area */}
-            <main className="flex-1 overflow-x-auto overflow-y-hidden scroll-smooth custom-scrollbar mb-4">
-                <div className="h-full flex items-start gap-4 px-4 py-6 md:p-6 min-w-max pb-24 snap-x snap-mandatory md:snap-none">
+            {/* --- MAIN CONTAINER --- */}
+            {/* flex-1: Takes up all remaining screen height (Screen - Nav) */}
+            <main className="flex-1 w-full overflow-x-auto overflow-y-hidden scroll-smooth custom-scrollbar relative">
+                
+                {/* --- FIX: CALCULATED HEIGHT --- */}
+                {/* h-[calc(100%-40px)]: Forces this container to be 40px shorter than the main window */}
+                {/* This guarantees the gap at the bottom on ALL screens */}
+                <div className="flex h-[calc(100%-40px)] items-start gap-4 px-4 pt-4 min-w-max">
                     <SortableContext items={columnsId} strategy={horizontalListSortingStrategy}>
                         {lists.map((list) => (
                             <TrelloList key={list.id} list={list} onCardClick={setSelectedCard} />
                         ))}
                     </SortableContext>
                     
-                    <div className="w-[85vw] md:w-80 flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity snap-center">
+                    <div className="w-[85vw] md:w-80 flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity">
                         <button className="w-full bg-white/20 text-white font-medium py-3 px-4 rounded-xl text-left backdrop-blur-sm flex items-center gap-2 hover:bg-white/30 border border-white/10">
                             <span className="text-xl">+</span> Add another list
                         </button>
@@ -265,14 +254,13 @@ function App() {
                 </div>
             </main>
 
-            {/* Instruction Bar */}
             <motion.div 
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1, type: "spring", stiffness: 200 }}
-                className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 w-[95%] md:w-auto"
+                className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 w-[95%] md:w-auto pointer-events-none"
             >
-                <div className="bg-black/75 backdrop-blur-xl border border-white/10 text-white py-3 px-5 rounded-full shadow-2xl flex items-center justify-between gap-4">
+                <div className="bg-black/75 backdrop-blur-xl border border-white/10 text-white py-3 px-5 rounded-full shadow-2xl flex items-center justify-between gap-4 pointer-events-auto">
                     <div className="flex items-center gap-3">
                         <div className="p-1.5 bg-white/10 rounded-full animate-pulse">
                             <Hand size={16} className="text-yellow-400" />
