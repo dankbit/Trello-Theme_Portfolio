@@ -136,35 +136,35 @@ Currently looking for roles where I can connect business, design, and technology
         companyUrl: "https://tatvakrti.com", 
         companyLogo: IMAGES.tatvaLogo,
         location: "Remote",
-        date: "06/2025 – 11/2025",
+        date: "12/2024 – 11/2025",
         content: "High converting React & Shopify builds.",
         labels: [{ text: "React", color: "bg-blue-400" }, { text: "Shopify", color: "bg-green-500" }],
         roleDescription: "Led frontend initiatives for D2C brands, ensuring scalability and performance optimization.",
         responsibilities: [
-            "Architected high-converting landing pages using React and Tailwind, reducing bounce rates by 15%.",
-            "Implemented CI/CD pipelines with automated versioning and rollback capabilities.",
-            "Optimized Shopify Liquid themes for Core Web Vitals, achieving 90+ performance scores."
+            "Built custom Shopify apps including Wishlist and Partial Payment using Admin APIs, Webhooks, and App Extensions.",
+            "Designed ERP middleware for Shopify Plus projects to handle product, order, and inventory sync.",
+            "Led technical pre sales, solution architecture, and advanced theme customization using Liquid and dynamic sections."
         ],
         members: [Briefcase, GitBranch]
       },
-      {
-        id: "exp-tatva-intern",
-        type: "experience",
-        title: "Software Dev Intern",
-        company: "Tatva Krti Inc",
-        companyLogo: IMAGES.tatvaLogo,
-        location: "Remote",
-        date: "12/2024 – 06/2025",
-        content: "Workflow automation & Liquid templates.",
-        labels: [{ text: "Internship", color: "bg-red-400" }],
-        roleDescription: "Focused on automating internal workflows and enhancing e-commerce frontends.",
-        responsibilities: [
-            "Streamlined internal task sequences, reducing manual workflow time by 20%.",
-            "Collaborated with UI/UX designers to translate Figma designs into pixel-perfect code.",
-            "Customized Shopify templates to support complex product variants."
-        ],
-        members: [Briefcase]
-      },
+      // {
+      //   id: "exp-tatva-intern",
+      //   type: "experience",
+      //   title: "Software Dev Intern",
+      //   company: "Tatva Krti Inc",
+      //   companyLogo: IMAGES.tatvaLogo,
+      //   location: "Remote",
+      //   date: "12/2024 – 06/2025",
+      //   content: "Workflow automation & Liquid templates.",
+      //   labels: [{ text: "Internship", color: "bg-red-400" }],
+      //   roleDescription: "Focused on automating internal workflows and enhancing e-commerce frontends.",
+      //   responsibilities: [
+      //       "Streamlined internal task sequences, reducing manual workflow time by 20%.",
+      //       "Collaborated with UI/UX designers to translate Figma designs into pixel-perfect code.",
+      //       "Customized Shopify templates to support complex product variants."
+      //   ],
+      //   members: [Briefcase]
+      // },
       {
         id: "exp-daveai",
         type: "experience",
